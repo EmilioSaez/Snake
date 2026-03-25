@@ -30,11 +30,11 @@ public class Snake {
         int col = Board.NUM_ROWS_COLS / 2;
         for (int i = 0; i < 4; i++) {
             Node node = new Node(row, col - i);
-            snakeBody.add(node);
+            snakeBody.add(i,node);
         }
         nodesToGrow = 0;
         snakeBody.add(n);
-        direction = Direction.LEFT;
+        direction = Direction.RIGHT;
     }
 
     public Node getFirst() {
