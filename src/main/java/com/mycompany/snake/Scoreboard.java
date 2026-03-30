@@ -14,6 +14,7 @@ public class Scoreboard extends javax.swing.JPanel implements Incrementer {
     
     private int score;
 
+
     /**
      * Creates new form Scoreboard
      */
@@ -22,10 +23,11 @@ public class Scoreboard extends javax.swing.JPanel implements Incrementer {
         score = 0;
         incrementScore(0);
     }
+ 
     
     public void incrementScore(int increment) {
         score += increment;
-        jLabel1.setText("Score: " + score);
+        jLabel1.setText(ConfigData.instance().userName+ ": "+   score);
     }
 
     /**
@@ -53,4 +55,8 @@ public class Scoreboard extends javax.swing.JPanel implements Incrementer {
         score = 0;
         incrementScore(0);
     }
+
+
+
+   
 }

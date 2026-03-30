@@ -21,6 +21,7 @@ public class Game extends javax.swing.JFrame {
         initComponents();
         gameOverDialog1.setSize(400, 400);
         gameOverDialog1.setInitGamer(board1);
+        board1.setIncrementer(scoreboard1);
         menuDialog = new MenuDialog(this, true);
         menuDialog.setInitGamer(board1);
         menuDialog.setSize(400, 400);

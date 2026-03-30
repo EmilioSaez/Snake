@@ -28,6 +28,10 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
     public void initGame() {
         initBoard();
     }
+    public void setIncrementer(Incrementer incrementer) {
+            this.incrementer = incrementer;
+    }
+
 
     class MyKeyAdapter extends KeyAdapter {
 
@@ -40,8 +44,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         public void setCanChange(boolean canChange) {
             this.canChange = canChange;
         }
-
-
+        
 
         @Override
         public void keyPressed(KeyEvent e) {
@@ -93,8 +96,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
     private Snake snake;
     private Timer timer;
     private MyKeyAdapter keyAdapter;
-    private GameOverInterface gameOverInterface;
-    private static final int DELTA_TIME = 100; // Por ahora 500, luego en el menu se podra cambiar
+    private GameOverInterface gameOverInterface; 
     public static final int NUM_ROWS_COLS = 30;
     public static final int NUM_ROW_FOOD = 15;
     public static final int NUM_COL_FOOD = 20;
@@ -109,7 +111,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         food = new Food(NUM_ROW_FOOD, NUM_COL_FOOD, this);
         keyAdapter = new MyKeyAdapter();
         addKeyListener(keyAdapter);
-        timer = new Timer(DELTA_TIME, new ActionListener() {
+        timer = new Timer(ConfigData.instance().deltaTimeDificulty, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 doGameLoop();
@@ -123,7 +125,9 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         snake = new Snake(this);
         food = new Food(NUM_ROW_FOOD, NUM_COL_FOOD, this);
         setFocusable(true);
+        timer.setDelay(ConfigData.instance().deltaTimeDificulty);
         timer.start();
+        
     }
 
     public void setGameOverInterface(GameOverInterface gameOverInterface) {

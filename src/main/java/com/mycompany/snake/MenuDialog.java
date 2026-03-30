@@ -5,6 +5,7 @@
 package com.mycompany.snake;
 
 import java.awt.Component;
+import javax.swing.JTextField;
 
 /**
  *
@@ -58,8 +59,10 @@ public class MenuDialog extends javax.swing.JDialog {
         jLabel2.setText("Dificultad");
 
         jButton2.setText("Media :|");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
 
         jButton3.setText("Dificil >:(");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
 
         jLabel3.setText("Tu nombre");
 
@@ -120,7 +123,7 @@ public class MenuDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        ConfigData.instance().deltaTimeDificulty = 80;
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -128,9 +131,19 @@ public class MenuDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        String name = jTextField1.getText();
+        ConfigData.instance().userName = name;
         initGamer.initGame();
         this.setVisible(false);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        ConfigData.instance().deltaTimeDificulty = 60;
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        ConfigData.instance().deltaTimeDificulty = 40;
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     public void setInitGamer(InitGamer initGamer) {
         this.initGamer = initGamer;
