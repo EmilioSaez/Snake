@@ -10,10 +10,11 @@ import java.awt.Component;
  *
  * @author emisaerar
  */
-public class GameOverDialog extends javax.swing.JDialog implements GameOverInterface{
-    
+public class GameOverDialog extends javax.swing.JDialog implements GameOverInterface {
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GameOverDialog.class.getName());
     private InitGamer initGamer;
+    private MenuDialog md;
 
     /**
      * Creates new form GameOverDialog
@@ -22,16 +23,16 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
         super(parent, modal);
         initComponents();
     }
+
     public GameOverDialog() {
         super();
         initComponents();
- 
+
     }
-    
-       public void setInitGamer(InitGamer initGamer) {
+
+    public void setInitGamer(InitGamer initGamer) {
         this.initGamer = initGamer;
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -45,6 +46,7 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(null);
@@ -58,20 +60,26 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
         jButton2.setText("Salir");
         jButton2.addActionListener(this::jButton2ActionPerformed);
 
+        jButton3.setText("Ajustes");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addComponent(jButton1)
-                .addGap(60, 60, 60)
-                .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(83, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(80, 80, 80))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addGap(60, 60, 60)
+                        .addComponent(jButton2)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -82,7 +90,9 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap(113, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
         pack();
@@ -96,6 +106,12 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        md.setVisible(rootPane);
+        setVisible(false);
+
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -139,11 +155,12 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
         setLocationRelativeTo(component);
         setVisible(true);
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

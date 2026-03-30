@@ -27,6 +27,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
     @Override
     public void initGame() {
         initBoard();
+        
     }
     public void setIncrementer(Incrementer incrementer) {
             this.incrementer = incrementer;
@@ -123,6 +124,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
 
     private void initBoard() {
         snake = new Snake(this);
+        incrementer.reset();
         food = new Food(NUM_ROW_FOOD, NUM_COL_FOOD, this);
         setFocusable(true);
         timer.setDelay(ConfigData.instance().deltaTimeDificulty);
