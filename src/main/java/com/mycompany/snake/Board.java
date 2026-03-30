@@ -31,35 +31,63 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
 
     class MyKeyAdapter extends KeyAdapter {
 
+        private boolean canChange;
+
+        public MyKeyAdapter() {
+            canChange = true;
+        }
+
+        public void setCanChange(boolean canChange) {
+            this.canChange = canChange;
+        }
+
+
+
         @Override
         public void keyPressed(KeyEvent e) {
+
+            if (!canChange == false) {
+                
+            
+
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
                     if (snake.getDirection() == Direction.UP || snake.getDirection() == Direction.DOWN) {
                         snake.setDirection(Direction.LEFT);
+                        canChange = false;
+
                     }
                     break;
                 case KeyEvent.VK_RIGHT:
                     if (snake.getDirection() == Direction.UP || snake.getDirection() == Direction.DOWN) {
                         snake.setDirection(Direction.RIGHT);
+                        canChange = false;
+
                     }
                     break;
                 case KeyEvent.VK_UP:
                     if (snake.getDirection() == Direction.RIGHT || snake.getDirection() == Direction.LEFT) {
                         snake.setDirection(Direction.UP);
+                        canChange = false;
+
                     }
                     break;
                 case KeyEvent.VK_DOWN:
                     if (snake.getDirection() == Direction.RIGHT || snake.getDirection() == Direction.LEFT) {
                         snake.setDirection(Direction.DOWN);
+                        canChange = false;
+
                     }
                     break;
                 default:
                     break;
             }
+            }
             repaint();
         }
     }
+    private Incrementer incrementer;
+    private int counter;
     private SpecialFood sFood;
     private Food food;
     private Snake snake;
@@ -76,6 +104,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
      */
     public Board() {
         initComponents();
+        counter = 0;
         snake = new Snake(this);
         food = new Food(NUM_ROW_FOOD, NUM_COL_FOOD, this);
         keyAdapter = new MyKeyAdapter();
@@ -87,7 +116,6 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
             }
 
         });
-        initBoard();
 
     }
 
@@ -102,14 +130,30 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         this.gameOverInterface = gameOverInterface;
     }
 
+    private int count(int cont) {
+        return cont + 1;
+    }
+
     private void doGameLoop() {
         if (canMove(snake.getFirst().getRow(), snake.getFirst().getCol(), snake)) {
             snake.move();
+            keyAdapter.setCanChange(true);
+            if (sFood != null) {
+                counter++;
+
+            }
+
+            System.out.println(counter);
+            if (counter == 40) {
+                disapear();
+                counter = 0;
+            }
             eatFood();
         } else {
             timer.stop();
             processGameOver();
         }
+        
         repaint();
     }
 
@@ -120,7 +164,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
 
     private boolean canMove(int curretRow, int currentCol, Snake snake) {
         if (snake.getDirection() == Direction.RIGHT && snake.hitHisSelf() == false) {
-            if (currentCol < NUM_ROWS_COLS) {
+            if (currentCol < NUM_ROWS_COLS - 1) {
                 return true;
             }
         }
@@ -135,36 +179,52 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
             }
         }
         if (snake.getDirection() == Direction.DOWN && snake.hitHisSelf() == false) {
-            if (curretRow < NUM_ROWS_COLS) {
+            if (curretRow < NUM_ROWS_COLS - 1) {
                 return true;
             }
         }
         return false;
 
     }
-private void eatFood() {
 
-    if (snake.getFirst().getRow() == food.getRow() && snake.getFirst().getCol() == food.getCol()) {
-        snake.grow(food.increase());
-        food.changeFoodPosition();
-        System.out.println("Comida normal comida");
-
-
-        if (sFood == null && (int) (Math.random() * 3) == 1) {
-            sFood = new SpecialFood(0, 0, this);
-            sFood.changeFoodPosition();
-        }
-    }
-
-
-    if (sFood != null) {
-        if (snake.getFirst().getRow() == sFood.getRow() && snake.getFirst().getCol() == sFood.getCol()) {
-            snake.grow(sFood.increase());
-            System.out.println("¡Soy especial!");
+    public void disapear() {
+        if (sFood != null) {
             sFood = null;
+
+        }
+
+    }
+
+    private void eatFood() {
+        if (snake.getFirst().getRow() == food.getRow() && snake.getFirst().getCol() == food.getCol()) {
+            snake.grow(food.increase());
+            incrementer.incrementScore(1);
+            food.changeFoodPosition();
+            while (snake.isTheSnakeHere(food)) {
+                food.changeFoodPosition();
+            }
+            System.out.println("Comida normal comida");
+
+            if (sFood == null && (int) (Math.random() * 3) == 1) {
+                sFood = new SpecialFood(0, 0, this);
+                sFood.changeFoodPosition();
+                while (snake.isTheSnakeHere(sFood)) {
+                    sFood.changeFoodPosition();
+                }
+            }
+        }
+
+        if (sFood != null) {
+            if (snake.getFirst().getRow() == sFood.getRow() && snake.getFirst().getCol() == sFood.getCol()) {
+                snake.grow(sFood.increase());
+                incrementer.incrementScore(3);
+                counter = 0;
+                System.out.println("¡Soy especial!");
+                sFood = null;
+            }
         }
     }
-}
+
     private void paintBorderGame(Graphics g) {
         g.setColor(Color.black);
         int with = squareWidth() * NUM_ROWS_COLS;

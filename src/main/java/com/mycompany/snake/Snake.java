@@ -23,7 +23,6 @@ public class Snake {
     private int nodesToGrow;
 
     public Snake(DrawSquareInterface drawSquareInterface) {
-        Node n = new Node(15, 15);
         this.drawSquareInterface = drawSquareInterface;
         snakeBody = new ArrayList<Node>();
         int row = Board.NUM_ROWS_COLS / 2;
@@ -33,7 +32,6 @@ public class Snake {
             snakeBody.add(i,node);
         }
         nodesToGrow = 0;
-        snakeBody.add(n);
         direction = Direction.RIGHT;
     }
 
@@ -120,16 +118,25 @@ public class Snake {
 
     }
 
-    public boolean hitHisSelf() {
+    public boolean hitHisSelf() { //La cabeza se fusiona con el tiempo
         boolean first = true;
         for (Node node : snakeBody) {
             if (first) {
                 first = false;
             } else {
-                if (this.getFirst().getRow() == node.getRow() && this.getFirst().getCol() == node.getCol()) {
+                if (this.getFirst().getRow()  == node.getRow() && this.getFirst().getCol() == node.getCol()) {
                     return true;
                 }
 
+            }
+        }
+        return false;
+    }
+    
+    public boolean isTheSnakeHere(Node n) {
+        for (Node node : snakeBody) {
+            if (node.getRow() == n.getRow() && node.getCol() == n.getCol() ) {
+                return true;
             }
         }
         return false;
