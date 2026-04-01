@@ -12,11 +12,12 @@ public class ConfigData {
     private static ConfigData configData = null;
     public String userName;
     public int deltaTimeDificulty; 
+    public boolean multiplayer;
     
     private ConfigData() {
         userName = "";
         deltaTimeDificulty = 100;
-        
+        multiplayer = false;
     }
     
     public static ConfigData instance() {

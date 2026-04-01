@@ -4,7 +4,7 @@
  */
 package com.mycompany.snake;
 
-import com.mycompany.snake.Incrementer;
+import com.mycompany.snake.Interfaces.Incrementer;
 
 /**
  *

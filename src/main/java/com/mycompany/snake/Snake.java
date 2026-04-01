@@ -3,6 +3,7 @@
  */
 package com.mycompany.snake;
 
+import com.mycompany.snake.Interfaces.DrawSquareInterface;
 import static com.mycompany.snake.Direction.DOWN;
 import static com.mycompany.snake.Direction.LEFT;
 import static com.mycompany.snake.Direction.RIGHT;
@@ -20,7 +21,6 @@ public class Snake {
     private List<Node> snakeBody;
     private Direction direction;
     private DrawSquareInterface drawSquareInterface;
-    private int nodesToGrow;
 
     public Snake(DrawSquareInterface drawSquareInterface) {
         this.drawSquareInterface = drawSquareInterface;
@@ -31,7 +31,6 @@ public class Snake {
             Node node = new Node(row, col - i);
             snakeBody.add(i,node);
         }
-        nodesToGrow = 0;
         direction = Direction.RIGHT;
     }
 
@@ -140,6 +139,27 @@ public class Snake {
             }
         }
         return false;
+    }
+    public Snake secondSnake() {
+        Snake snake = new Snake(drawSquareInterface);
+        int row = Board.NUM_ROWS_COLS / 2;
+        int col = Board.NUM_ROWS_COLS / 2;
+        for (int i = 0; i < 4; i++) {
+            Node node = new Node(row + 1, col - i);
+            snakeBody.add(i,node);
+        }
+        return snake;
+    }
+    public boolean hitOtherSnake(Snake snakeOne, Snake snakeTwo) {
+        for (Node node1 : snakeOne.snakeBody) {
+            for (Node node2 : snakeTwo.snakeBody) {
+                if (node1.getRow()== node2.getRow() && node1.getCol() == node2.getCol()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+        
     }
 
 }

@@ -4,7 +4,12 @@
  */
 package com.mycompany.snake;
 
+import com.mycompany.snake.Interfaces.InitGamer;
+import com.mycompany.snake.Interfaces.GameOverInterface;
 import java.awt.Component;
+import com.mycompany.snake.Interfaces.RestartAplicationInteface;
+import com.mycompany.snake.Interfaces.VisibilityInterface;
+import java.beans.Visibility;
 
 /**
  *
@@ -14,7 +19,8 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GameOverDialog.class.getName());
     private InitGamer initGamer;
-    private MenuDialog md;
+    private RestartAplicationInteface restartAplicationInteface;
+    private VisibilityInterface visibilityInterface;
 
     /**
      * Creates new form GameOverDialog
@@ -108,9 +114,9 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        md.setVisible(rootPane);
-        setVisible(false);
-
+        restartAplicationInteface.resetAll();
+        visibilityInterface.changeVisibility();
+                setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
@@ -156,6 +162,14 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
         setVisible(true);
     }
 
+    public void setVisibilityInterface(VisibilityInterface vi) {
+        this.visibilityInterface = vi;
+    }
+
+    public void setRestartAplicationInterface(RestartAplicationInteface rai) {
+        this.restartAplicationInteface = rai;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -163,4 +177,5 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
+
 }

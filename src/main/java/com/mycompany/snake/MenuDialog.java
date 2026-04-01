@@ -4,6 +4,8 @@
  */
 package com.mycompany.snake;
 
+import com.mycompany.snake.Interfaces.InitGamer;
+import com.mycompany.snake.Interfaces.RestartAplicationInteface;
 import java.awt.Component;
 import javax.swing.JTextField;
 
@@ -47,6 +49,8 @@ public class MenuDialog extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jToggleButton1 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -72,6 +76,11 @@ public class MenuDialog extends javax.swing.JDialog {
         jTextField1.setText("Mi Nombre");
         jTextField1.addActionListener(this::jTextField1ActionPerformed);
 
+        jLabel4.setText("Multijugador");
+
+        jToggleButton1.setText("No");
+        jToggleButton1.addActionListener(this::jToggleButton1ActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -86,7 +95,9 @@ public class MenuDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(jToggleButton1))
                 .addGap(35, 35, 35))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(112, Short.MAX_VALUE)
@@ -111,9 +122,16 @@ public class MenuDialog extends javax.swing.JDialog {
                     .addComponent(jButton1)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jLabel4))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(jToggleButton1)))
                 .addGap(18, 18, 18)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
@@ -144,6 +162,17 @@ public class MenuDialog extends javax.swing.JDialog {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         ConfigData.instance().deltaTimeDificulty = 40;
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        if (jToggleButton1.isSelected()) {
+            jToggleButton1.setText("Sí");
+            ConfigData.instance().multiplayer = true;
+        } else {
+            jToggleButton1.setText("No"); 
+            ConfigData.instance().multiplayer = false;
+
+        }
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     public void setInitGamer(InitGamer initGamer) {
         this.initGamer = initGamer;
@@ -199,6 +228,8 @@ public class MenuDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 }

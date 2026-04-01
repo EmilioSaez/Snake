@@ -2,15 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package com.mycompany.snake;
+package com.mycompany.snake.Interfaces;
 
 /**
  *
- * @author vm.alonsobarberan
+ * @author emili
  */
-public interface Incrementer {
-    
-    public void incrementScore(int increment);
-    public void reset();
+public interface RestartAplicationInteface {
+    public void resetAll();
     
 }

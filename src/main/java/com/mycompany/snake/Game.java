@@ -4,11 +4,13 @@
  */
 package com.mycompany.snake;
 
+import com.mycompany.snake.Interfaces.RestartAplicationInteface;
+
 /**
  *
  * @author emisaerar
  */
-public class Game extends javax.swing.JFrame {
+public class Game extends javax.swing.JFrame implements  RestartAplicationInteface{
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Game.class.getName());
     private MenuDialog menuDialog;
@@ -21,6 +23,8 @@ public class Game extends javax.swing.JFrame {
         initComponents();
         gameOverDialog1.setSize(400, 400);
         gameOverDialog1.setInitGamer(board1);
+        gameOverDialog1.setRestartAplicationInterface(this);
+        gameOverDialog1.setVisibilityInterface(board1);
         board1.setIncrementer(scoreboard1);
         menuDialog = new MenuDialog(this, true);
         menuDialog.setInitGamer(board1);
@@ -120,4 +124,19 @@ public class Game extends javax.swing.JFrame {
     private com.mycompany.snake.MenuDialog menuDialog1;
     private com.mycompany.snake.Scoreboard scoreboard1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void resetAll() {
+        initComponents();
+         gameOverDialog1.setSize(400, 400);
+        gameOverDialog1.setInitGamer(board1);
+        gameOverDialog1.setVisibilityInterface(board1);
+        gameOverDialog1.setRestartAplicationInterface(this);
+        board1.setIncrementer(scoreboard1);
+        menuDialog = new MenuDialog(this, true);
+        menuDialog.setInitGamer(board1);
+        menuDialog.setSize(400, 400);
+        menuDialog.setVisible(true);
+        board1.setGameOverInterface(gameOverDialog1);
+    }
 }

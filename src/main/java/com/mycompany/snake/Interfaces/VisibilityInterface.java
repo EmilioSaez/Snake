@@ -2,15 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package com.mycompany.snake;
-
-import java.awt.Component;
+package com.mycompany.snake.Interfaces;
 
 /**
  *
- * @author vm.alonsobarberan
+ * @author emili
  */
-public interface GameOverInterface {
-    public void setVisible(Component component);
-        
+public interface VisibilityInterface {
+    public void changeVisibility();
+    
 }
