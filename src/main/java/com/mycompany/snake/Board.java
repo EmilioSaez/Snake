@@ -189,9 +189,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         timer.stop();
         gameOverInterface.setVisible(this);
     }
-    private boolean canMoveInMultiplayer(int curretRow, int currentCol, Snake snakeOne,Snake snakeTWo) {
-        
-    }
+
 
     private boolean canMove(int curretRow, int currentCol, Snake snake) {
         if (snake.getDirection() == Direction.RIGHT && snake.hitHisSelf() == false) {
