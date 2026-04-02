@@ -140,18 +140,17 @@ public class Snake {
         }
         return false;
     }
-    public Snake secondSnake() {
-        Snake snake = new Snake(drawSquareInterface);
+    public void secondSnake() {
+        snakeBody.clear();
         int row = Board.NUM_ROWS_COLS / 2;
         int col = Board.NUM_ROWS_COLS / 2;
         for (int i = 0; i < 4; i++) {
-            Node node = new Node(row + 1, col - i);
+            Node node = new Node(row + 2, col - i);
             snakeBody.add(i,node);
         }
-        return snake;
     }
-    public boolean hitOtherSnake(Snake snakeOne, Snake snakeTwo) {
-        for (Node node1 : snakeOne.snakeBody) {
+    public boolean hitOtherSnake( Snake snakeTwo) {
+        for (Node node1 : snakeBody) {
             for (Node node2 : snakeTwo.snakeBody) {
                 if (node1.getRow()== node2.getRow() && node1.getCol() == node2.getCol()) {
                     return true;

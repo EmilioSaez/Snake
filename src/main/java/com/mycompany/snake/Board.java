@@ -45,59 +45,127 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         setVisible(false);
     }
 
-
-
-
-
     class MyKeyAdapter extends KeyAdapter {
 
-        private boolean canChange;
+        private boolean canChangeOne;
+        private boolean canChangeTwo;
 
         public MyKeyAdapter() {
-            canChange = true;
+            canChangeOne = true;
+            if (ConfigData.instance().multiplayer) {
+                canChangeTwo = true;
+
+            }
         }
 
         public void setCanChange(boolean canChange) {
-            this.canChange = canChange;
+            this.canChangeOne = canChange;
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
 
-            if (!canChange == false) {
+            if (ConfigData.instance().multiplayer == false) {
 
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_LEFT:
-                        if (snakeOne.getDirection() == Direction.UP || snakeOne.getDirection() == Direction.DOWN) {
-                            snakeOne.setDirection(Direction.LEFT);
-                            canChange = false;
+                if (canChangeOne) {
 
-                        }
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        if (snakeOne.getDirection() == Direction.UP || snakeOne.getDirection() == Direction.DOWN) {
-                            snakeOne.setDirection(Direction.RIGHT);
-                            canChange = false;
+                    switch (e.getKeyCode()) {
+                        case KeyEvent.VK_LEFT:
+                            if (snakeOne.getDirection() == Direction.UP || snakeOne.getDirection() == Direction.DOWN) {
+                                snakeOne.setDirection(Direction.LEFT);
+                                canChangeOne = false;
 
-                        }
-                        break;
-                    case KeyEvent.VK_UP:
-                        if (snakeOne.getDirection() == Direction.RIGHT || snakeOne.getDirection() == Direction.LEFT) {
-                            snakeOne.setDirection(Direction.UP);
-                            canChange = false;
+                            }
+                            break;
+                        case KeyEvent.VK_RIGHT:
+                            if (snakeOne.getDirection() == Direction.UP || snakeOne.getDirection() == Direction.DOWN) {
+                                snakeOne.setDirection(Direction.RIGHT);
+                                canChangeOne = false;
 
-                        }
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        if (snakeOne.getDirection() == Direction.RIGHT || snakeOne.getDirection() == Direction.LEFT) {
-                            snakeOne.setDirection(Direction.DOWN);
-                            canChange = false;
+                            }
+                            break;
+                        case KeyEvent.VK_UP:
+                            if (snakeOne.getDirection() == Direction.RIGHT || snakeOne.getDirection() == Direction.LEFT) {
+                                snakeOne.setDirection(Direction.UP);
+                                canChangeOne = false;
 
-                        }
-                        break;
-                    default:
-                        break;
+                            }
+                            break;
+                        case KeyEvent.VK_DOWN:
+                            if (snakeOne.getDirection() == Direction.RIGHT || snakeOne.getDirection() == Direction.LEFT) {
+                                snakeOne.setDirection(Direction.DOWN);
+                                canChangeOne = false;
+
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
+            } else {
+                if (canChangeOne) {
+
+                    switch (e.getKeyCode()) {
+                        case KeyEvent.VK_LEFT:
+                            if (snakeOne.getDirection() == Direction.UP || snakeOne.getDirection() == Direction.DOWN) {
+                                snakeOne.setDirection(Direction.LEFT);
+                                canChangeOne = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_RIGHT:
+                            if (snakeOne.getDirection() == Direction.UP || snakeOne.getDirection() == Direction.DOWN) {
+                                snakeOne.setDirection(Direction.RIGHT);
+                                canChangeOne = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_UP:
+                            if (snakeOne.getDirection() == Direction.RIGHT || snakeOne.getDirection() == Direction.LEFT) {
+                                snakeOne.setDirection(Direction.UP);
+                                canChangeOne = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_DOWN:
+                            if (snakeOne.getDirection() == Direction.RIGHT || snakeOne.getDirection() == Direction.LEFT) {
+                                snakeOne.setDirection(Direction.DOWN);
+                                canChangeOne = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_A:
+                            if (snakeTwo.getDirection() == Direction.UP || snakeTwo.getDirection() == Direction.DOWN) {
+                                snakeTwo.setDirection(Direction.LEFT);
+                                canChangeTwo = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_D:
+                            if (snakeTwo.getDirection() == Direction.UP || snakeTwo.getDirection() == Direction.DOWN) {
+                                snakeTwo.setDirection(Direction.RIGHT);
+                                canChangeTwo = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_W:
+                            if (snakeTwo.getDirection() == Direction.RIGHT || snakeTwo.getDirection() == Direction.LEFT) {
+                                snakeTwo.setDirection(Direction.UP);
+                                canChangeTwo = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_S:
+                            if (snakeTwo.getDirection() == Direction.RIGHT || snakeTwo.getDirection() == Direction.LEFT) {
+                                snakeTwo.setDirection(Direction.DOWN);
+                                canChangeTwo = false;
+
+                            }
+                        default:
+                            break;
+                    }
+                }
+
             }
             repaint();
         }
@@ -123,6 +191,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         counter = 0;
         snakeOne = new Snake(this);
         if (ConfigData.instance().multiplayer) {
+            snakeTwo = new Snake(this);
             snakeTwo.secondSnake();
         }
         food = new Food(NUM_ROW_FOOD, NUM_COL_FOOD, this);
@@ -142,6 +211,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         snakeOne = new Snake(this);
         if (ConfigData.instance().multiplayer) {
             snakeTwo = new Snake(this);
+            snakeTwo.secondSnake();
         }
         incrementer.reset();
         food = new Food(NUM_ROW_FOOD, NUM_COL_FOOD, this);
@@ -162,25 +232,41 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
     private void doGameLoop() {
         if (ConfigData.instance().multiplayer == false) {
             if (canMove(snakeOne.getFirst().getRow(), snakeOne.getFirst().getCol(), snakeOne)) {
-            snakeOne.move();
-            keyAdapter.setCanChange(true);
-            if (sFood != null) {
-                counter++;
+                snakeOne.move();
+                keyAdapter.setCanChange(true);
+                if (sFood != null) {
+                    counter++;
+                }
+                if (counter == 40) {
+                    disapear();
+                    counter = 0;
+                }
+                eatFood();
+            } else {
+                timer.stop();
+                processGameOver();
             }
-            System.out.println(counter);
-            if (counter == 40) {
-                disapear();
-                counter = 0;
-            }
-            eatFood();
         } else {
-            timer.stop();
-            processGameOver();
+            if (canMove(snakeOne.getFirst().getRow(), snakeOne.getFirst().getCol(), snakeOne)
+                    && canMove(snakeTwo.getFirst().getRow(), snakeTwo.getFirst().getCol(), snakeTwo)
+                    && snakeOne.hitOtherSnake(snakeTwo) == false) {
+                snakeOne.move();
+                snakeTwo.move();
+                keyAdapter.setCanChange(true);
+                if (sFood != null) {
+                    counter++;
+                }
+                if (counter == 40) {
+                    disapear();
+                    counter = 0;
+                }
+                eatFood();
+            } else {
+                timer.stop();
+                processGameOver();
             }
-        } else {
-            
+
         }
-        
 
         repaint();
     }
@@ -189,7 +275,6 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         timer.stop();
         gameOverInterface.setVisible(this);
     }
-
 
     private boolean canMove(int curretRow, int currentCol, Snake snake) {
         if (snake.getDirection() == Direction.RIGHT && snake.hitHisSelf() == false) {
@@ -284,6 +369,9 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         super.paintComponent(g);
         paintBorderGame(g);
         snakeOne.paint(g);
+        if (ConfigData.instance().multiplayer) {
+            snakeTwo.paint(g);
+        }
         food.paint(g);
         if (sFood != null) {
             sFood.paint(g);
