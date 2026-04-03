@@ -5,7 +5,12 @@
 package com.mycompany.snake;
 
 import com.mycompany.snake.Interfaces.InitGamer;
+import com.mycompany.snake.Interfaces.MusicInterface;
 import com.mycompany.snake.Interfaces.RestartAplicationInteface;
+import java.io.File;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.awt.Component;
 import javax.swing.JTextField;
 
@@ -13,10 +18,11 @@ import javax.swing.JTextField;
  *
  * @author emisaerar
  */
-public class MenuDialog extends javax.swing.JDialog {
+public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuDialog.class.getName());
     private InitGamer initGamer;
+    private Clip menuSong;
 
     /**
      * Creates new form MenuDialog
@@ -24,6 +30,15 @@ public class MenuDialog extends javax.swing.JDialog {
     public MenuDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        menuSong = startMusic("/com/mycompany/snake/SnakeSongs/MenuSong.wav"); // Para hacer esta parte me ayude de la IA ya que no sabia como implementar la parte de los Clips
+        if (menuSong != null) {
+            menuSong.loop(Clip.LOOP_CONTINUOUSLY);
+            
+        }
+        
+        
+        
     }
 
     public MenuDialog() {
@@ -51,6 +66,7 @@ public class MenuDialog extends javax.swing.JDialog {
         jTextField1 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jToggleButton1 = new javax.swing.JToggleButton();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -81,6 +97,8 @@ public class MenuDialog extends javax.swing.JDialog {
         jToggleButton1.setText("No");
         jToggleButton1.addActionListener(this::jToggleButton1ActionPerformed);
 
+        jLabel5.setText("| ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -93,11 +111,14 @@ public class MenuDialog extends javax.swing.JDialog {
                     .addComponent(jButton2)
                     .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(jToggleButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jToggleButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(35, 35, 35))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(112, Short.MAX_VALUE)
@@ -131,7 +152,9 @@ public class MenuDialog extends javax.swing.JDialog {
                         .addComponent(jButton3))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(9, 9, 9)
-                        .addComponent(jToggleButton1)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(18, 18, 18)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
@@ -229,7 +252,28 @@ public class MenuDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public Clip startMusic(String song) {
+        try {
+            java.net.URL url = getClass().getResource(song);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+            return clip;
+        } catch (Exception e) {
+            System.err.println("Wrong song rute");
+            e.printStackTrace();
+            System.out.println("La ruta actual del proyecto es: " + new File(".").getAbsolutePath());
+            return null;
+        }
+        
+    }
+
+    
 }
