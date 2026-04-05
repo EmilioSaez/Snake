@@ -11,6 +11,7 @@ package com.mycompany.snake.Interfaces;
 public interface Incrementer {
     
     public void incrementScore(int increment);
+    public int returnScore();
     public void reset();
     
 }

@@ -56,6 +56,11 @@ public class Scoreboard extends javax.swing.JPanel implements Incrementer {
         incrementScore(0);
     }
 
+    @Override
+    public int returnScore() {
+        return score;
+    }
+
 
 
    

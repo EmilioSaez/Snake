@@ -10,6 +10,9 @@ import java.awt.Component;
 import com.mycompany.snake.Interfaces.RestartAplicationInteface;
 import com.mycompany.snake.Interfaces.VisibilityInterface;
 import java.beans.Visibility;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  *
@@ -19,6 +22,7 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GameOverDialog.class.getName());
     private InitGamer initGamer;
+    private BufferedReader input;
     private RestartAplicationInteface restartAplicationInteface;
     private VisibilityInterface visibilityInterface;
 
@@ -27,7 +31,43 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
      */
     public GameOverDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        input = null;
+                setRecords(); // Por arreglar
+
         initComponents();
+    }
+    private void setRecords() {
+        String lastLine = "";
+        String bestLine = "";
+        int maxPuntuations = -1;
+        try {
+            input = new BufferedReader(new FileReader("Records"));
+            String line;
+            while ((line = input.readLine()) != null) {
+                lastLine = line;
+                String[] lineParts = line.split(":");
+                int actualPoints = Integer.parseInt(lineParts[1].split(" ")[0]);
+
+                if (actualPoints > maxPuntuations) {
+                    maxPuntuations = actualPoints;
+                    bestLine = line;
+                }
+            }
+            System.out.println(bestLine);
+            jTextField1.setText("Mejor Partida: " + bestLine);
+            jTextField2.setText("Tu partida" + lastLine);
+        } catch (Exception e) {
+            System.err.println(e);
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException ex) {
+                    System.getLogger(GameOverDialog.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                }
+
+            }
+        }
     }
 
     public GameOverDialog() {
@@ -53,6 +93,8 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(null);
@@ -69,36 +111,51 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
         jButton3.setText("Ajustes");
         jButton3.addActionListener(this::jButton3ActionPerformed);
 
+        jTextField1.setText("jTextField1");
+
+        jTextField2.setText("jTextField2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(83, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(80, 80, 80))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton3)
+                .addGap(163, 163, 163))
             .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(60, 60, 60)
-                        .addComponent(jButton2)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(78, 78, 78)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(84, 84, 84)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                            .addComponent(jTextField2))))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
+                .addGap(20, 20, 20)
                 .addComponent(jLabel1)
-                .addGap(61, 61, 61)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(67, 67, 67)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -116,7 +173,7 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         restartAplicationInteface.resetAll();
         visibilityInterface.changeVisibility();
-                setVisible(false);
+        setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
@@ -176,6 +233,8 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 
 }

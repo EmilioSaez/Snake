@@ -12,6 +12,10 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.awt.Component;
+import java.io.IOException;
+import java.util.Scanner;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JTextField;
 
 /**
@@ -22,6 +26,7 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuDialog.class.getName());
     private InitGamer initGamer;
+    private String menuSongRute;
     private Clip menuSong;
 
     /**
@@ -30,20 +35,23 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
     public MenuDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        menuSong = startMusic("/com/mycompany/snake/SnakeSongs/MenuSong.wav"); // Para hacer esta parte me ayude de la IA ya que no sabia como implementar la parte de los Clips
-        if (menuSong != null) {
-            menuSong.loop(Clip.LOOP_CONTINUOUSLY);
-            
-        }
-        
-        
-        
+        jLabel5.setVisible(false);
+        jLabel6.setVisible(false);
+        menuSongRute = "MenuSong.wav"; 
+
+       try {
+        startMusic(menuSongRute); // https://www.youtube.com/watch?v=n14r9Tjx0z4
+    } catch (Exception e) {
+        logger.log(java.util.logging.Level.SEVERE, "No se pudo reproducir la música", e);
+    }
+
     }
 
     public MenuDialog() {
         super();
         initComponents();
+        jLabel5.setVisible(false);
+        jLabel6.setVisible(false);
 
     }
 
@@ -67,6 +75,7 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
         jLabel4 = new javax.swing.JLabel();
         jToggleButton1 = new javax.swing.JToggleButton();
         jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -97,7 +106,9 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
         jToggleButton1.setText("No");
         jToggleButton1.addActionListener(this::jToggleButton1ActionPerformed);
 
-        jLabel5.setText("| ");
+        jLabel5.setText("Snake 1:  🡩 🡣 🡢 V");
+
+        jLabel6.setText("Snake 2: W A S D");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -118,7 +129,9 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jToggleButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(35, 35, 35))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(112, Short.MAX_VALUE)
@@ -149,14 +162,16 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3))
+                        .addComponent(jButton3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(9, 9, 9)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(18, 18, 18)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jToggleButton1)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel6)))
                 .addGap(38, 38, 38))
         );
 
@@ -175,6 +190,7 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
         String name = jTextField1.getText();
         ConfigData.instance().userName = name;
         initGamer.initGame();
+        stopMusic();
         this.setVisible(false);
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -190,9 +206,13 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
         if (jToggleButton1.isSelected()) {
             jToggleButton1.setText("Sí");
             ConfigData.instance().multiplayer = true;
+            jLabel5.setVisible(true);
+            jLabel6.setVisible(true);
         } else {
-            jToggleButton1.setText("No"); 
+            jToggleButton1.setText("No");
             ConfigData.instance().multiplayer = false;
+            jLabel5.setVisible(false);
+            jLabel6.setVisible(false);
 
         }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
@@ -253,27 +273,25 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 
+
     @Override
-    public Clip startMusic(String song) {
-        try {
-            java.net.URL url = getClass().getResource(song);
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-            return clip;
-        } catch (Exception e) {
-            System.err.println("Wrong song rute");
-            e.printStackTrace();
-            System.out.println("La ruta actual del proyecto es: " + new File(".").getAbsolutePath());
-            return null;
-        }
-        
+    public void startMusic(String song) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
+        File file = new File(song);
+        AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+        menuSong = AudioSystem.getClip();
+        menuSong.open(audioStream);
+        menuSong.loop((Clip.LOOP_CONTINUOUSLY));
+        menuSong.start();
     }
 
-    
+    @Override
+    public void stopMusic() {
+        menuSong.stop();
+    }
+
 }

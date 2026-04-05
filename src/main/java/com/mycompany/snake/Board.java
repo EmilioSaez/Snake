@@ -12,6 +12,7 @@ import static com.mycompany.snake.Direction.DOWN;
 import static com.mycompany.snake.Direction.LEFT;
 import static com.mycompany.snake.Direction.RIGHT;
 import static com.mycompany.snake.Direction.UP;
+import com.mycompany.snake.Interfaces.MusicInterface;
 import com.mycompany.snake.Interfaces.VisibilityInterface;
 import java.awt.Color;
 import java.awt.Component;
@@ -21,14 +22,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.DriverManager;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.Timer;
 
 /**
  *
  * @author emisaerar
  */
-public class Board extends javax.swing.JPanel implements DrawSquareInterface, InitGamer, VisibilityInterface {
+public class Board extends javax.swing.JPanel implements DrawSquareInterface, InitGamer, VisibilityInterface, MusicInterface {
 
     @Override
     public void initGame() {
@@ -45,131 +56,24 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         setVisible(false);
     }
 
-    class MyKeyAdapter extends KeyAdapter {
-
-        private boolean canChangeOne;
-        private boolean canChangeTwo;
-
-        public MyKeyAdapter() {
-            canChangeOne = true;
-            if (ConfigData.instance().multiplayer) {
-                canChangeTwo = true;
-
-            }
-        }
-
-        public void setCanChange(boolean canChange) {
-            this.canChangeOne = canChange;
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-
-            if (ConfigData.instance().multiplayer == false) {
-
-                if (canChangeOne) {
-
-                    switch (e.getKeyCode()) {
-                        case KeyEvent.VK_LEFT:
-                            if (snakeOne.getDirection() == Direction.UP || snakeOne.getDirection() == Direction.DOWN) {
-                                snakeOne.setDirection(Direction.LEFT);
-                                canChangeOne = false;
-
-                            }
-                            break;
-                        case KeyEvent.VK_RIGHT:
-                            if (snakeOne.getDirection() == Direction.UP || snakeOne.getDirection() == Direction.DOWN) {
-                                snakeOne.setDirection(Direction.RIGHT);
-                                canChangeOne = false;
-
-                            }
-                            break;
-                        case KeyEvent.VK_UP:
-                            if (snakeOne.getDirection() == Direction.RIGHT || snakeOne.getDirection() == Direction.LEFT) {
-                                snakeOne.setDirection(Direction.UP);
-                                canChangeOne = false;
-
-                            }
-                            break;
-                        case KeyEvent.VK_DOWN:
-                            if (snakeOne.getDirection() == Direction.RIGHT || snakeOne.getDirection() == Direction.LEFT) {
-                                snakeOne.setDirection(Direction.DOWN);
-                                canChangeOne = false;
-
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            } else {
-                if (canChangeOne) {
-
-                    switch (e.getKeyCode()) {
-                        case KeyEvent.VK_LEFT:
-                            if (snakeOne.getDirection() == Direction.UP || snakeOne.getDirection() == Direction.DOWN) {
-                                snakeOne.setDirection(Direction.LEFT);
-                                canChangeOne = false;
-
-                            }
-                            break;
-                        case KeyEvent.VK_RIGHT:
-                            if (snakeOne.getDirection() == Direction.UP || snakeOne.getDirection() == Direction.DOWN) {
-                                snakeOne.setDirection(Direction.RIGHT);
-                                canChangeOne = false;
-
-                            }
-                            break;
-                        case KeyEvent.VK_UP:
-                            if (snakeOne.getDirection() == Direction.RIGHT || snakeOne.getDirection() == Direction.LEFT) {
-                                snakeOne.setDirection(Direction.UP);
-                                canChangeOne = false;
-
-                            }
-                            break;
-                        case KeyEvent.VK_DOWN:
-                            if (snakeOne.getDirection() == Direction.RIGHT || snakeOne.getDirection() == Direction.LEFT) {
-                                snakeOne.setDirection(Direction.DOWN);
-                                canChangeOne = false;
-
-                            }
-                            break;
-                        case KeyEvent.VK_A:
-                            if (snakeTwo.getDirection() == Direction.UP || snakeTwo.getDirection() == Direction.DOWN) {
-                                snakeTwo.setDirection(Direction.LEFT);
-                                canChangeTwo = false;
-
-                            }
-                            break;
-                        case KeyEvent.VK_D:
-                            if (snakeTwo.getDirection() == Direction.UP || snakeTwo.getDirection() == Direction.DOWN) {
-                                snakeTwo.setDirection(Direction.RIGHT);
-                                canChangeTwo = false;
-
-                            }
-                            break;
-                        case KeyEvent.VK_W:
-                            if (snakeTwo.getDirection() == Direction.RIGHT || snakeTwo.getDirection() == Direction.LEFT) {
-                                snakeTwo.setDirection(Direction.UP);
-                                canChangeTwo = false;
-
-                            }
-                            break;
-                        case KeyEvent.VK_S:
-                            if (snakeTwo.getDirection() == Direction.RIGHT || snakeTwo.getDirection() == Direction.LEFT) {
-                                snakeTwo.setDirection(Direction.DOWN);
-                                canChangeTwo = false;
-
-                            }
-                        default:
-                            break;
-                    }
-                }
-
-            }
-            repaint();
-        }
+    @Override
+    public void startMusic(String song) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        File file = new File(song);
+        AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+        boardSong = AudioSystem.getClip();
+        boardSong.open(audioStream);
+        boardSong.loop((Clip.LOOP_CONTINUOUSLY));
+        boardSong.start();
     }
+
+    @Override
+    public void stopMusic() {
+        boardSong.stop();
+    }
+
+    private Clip boardSong;
+    private String boardSongRute;
+    private PrintWriter outputStream;
     private Incrementer incrementer;
     private int counter;
     private SpecialFood sFood;
@@ -187,6 +91,8 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
      * Creates new form Board
      */
     public Board() {
+        boardSongRute = "GameSong.wav";
+        outputStream = null;
         initComponents();
         counter = 0;
         snakeOne = new Snake(this);
@@ -208,6 +114,11 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
     }
 
     private void initBoard() {
+        try {
+            startMusic(boardSongRute); // https://www.youtube.com/watch?v=n14r9Tjx0z4
+        } catch (Exception e) {
+            logger.log(java.util.logging.Level.SEVERE, "No se pudo reproducir la música", e);
+        }
         snakeOne = new Snake(this);
         if (ConfigData.instance().multiplayer) {
             snakeTwo = new Snake(this);
@@ -272,8 +183,28 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
     }
 
     private void processGameOver() {
+        String dificulty = "";
+        if (ConfigData.instance().deltaTimeDificulty == 40) {
+            dificulty = "easy";
+
+        } else if (ConfigData.instance().deltaTimeDificulty == 60) {
+            dificulty = "medium";
+
+        } else {
+            dificulty = "hard";
+        }
         timer.stop();
         gameOverInterface.setVisible(this);
+        try {
+            outputStream = new PrintWriter(new FileWriter("Records"));
+            outputStream.println(ConfigData.instance().userName + ":" + incrementer.returnScore() + dificulty);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (outputStream != null) {
+                outputStream.close();
+            }
+        }
     }
 
     private boolean canMove(int curretRow, int currentCol, Snake snake) {
@@ -408,7 +339,131 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    class MyKeyAdapter extends KeyAdapter {
 
+        private boolean canChangeOne;
+        private boolean canChangeTwo;
+
+        public MyKeyAdapter() {
+            canChangeOne = true;
+            if (ConfigData.instance().multiplayer) {
+                canChangeTwo = true;
+
+            }
+        }
+
+        public void setCanChange(boolean canChange) {
+            this.canChangeOne = canChange;
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+
+            if (ConfigData.instance().multiplayer == false) {
+
+                if (canChangeOne) {
+
+                    switch (e.getKeyCode()) {
+                        case KeyEvent.VK_LEFT:
+                            if (snakeOne.getDirection() == Direction.UP || snakeOne.getDirection() == Direction.DOWN) {
+                                snakeOne.setDirection(Direction.LEFT);
+                                canChangeOne = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_RIGHT:
+                            if (snakeOne.getDirection() == Direction.UP || snakeOne.getDirection() == Direction.DOWN) {
+                                snakeOne.setDirection(Direction.RIGHT);
+                                canChangeOne = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_UP:
+                            if (snakeOne.getDirection() == Direction.RIGHT || snakeOne.getDirection() == Direction.LEFT) {
+                                snakeOne.setDirection(Direction.UP);
+                                canChangeOne = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_DOWN:
+                            if (snakeOne.getDirection() == Direction.RIGHT || snakeOne.getDirection() == Direction.LEFT) {
+                                snakeOne.setDirection(Direction.DOWN);
+                                canChangeOne = false;
+
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            } else {
+                if (canChangeOne) {
+
+                    switch (e.getKeyCode()) {
+                        case KeyEvent.VK_LEFT:
+                            if (snakeOne.getDirection() == Direction.UP || snakeOne.getDirection() == Direction.DOWN) {
+                                snakeOne.setDirection(Direction.LEFT);
+                                canChangeOne = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_RIGHT:
+                            if (snakeOne.getDirection() == Direction.UP || snakeOne.getDirection() == Direction.DOWN) {
+                                snakeOne.setDirection(Direction.RIGHT);
+                                canChangeOne = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_UP:
+                            if (snakeOne.getDirection() == Direction.RIGHT || snakeOne.getDirection() == Direction.LEFT) {
+                                snakeOne.setDirection(Direction.UP);
+                                canChangeOne = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_DOWN:
+                            if (snakeOne.getDirection() == Direction.RIGHT || snakeOne.getDirection() == Direction.LEFT) {
+                                snakeOne.setDirection(Direction.DOWN);
+                                canChangeOne = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_A:
+                            if (snakeTwo.getDirection() == Direction.UP || snakeTwo.getDirection() == Direction.DOWN) {
+                                snakeTwo.setDirection(Direction.LEFT);
+                                canChangeTwo = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_D:
+                            if (snakeTwo.getDirection() == Direction.UP || snakeTwo.getDirection() == Direction.DOWN) {
+                                snakeTwo.setDirection(Direction.RIGHT);
+                                canChangeTwo = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_W:
+                            if (snakeTwo.getDirection() == Direction.RIGHT || snakeTwo.getDirection() == Direction.LEFT) {
+                                snakeTwo.setDirection(Direction.UP);
+                                canChangeTwo = false;
+
+                            }
+                            break;
+                        case KeyEvent.VK_S:
+                            if (snakeTwo.getDirection() == Direction.RIGHT || snakeTwo.getDirection() == Direction.LEFT) {
+                                snakeTwo.setDirection(Direction.DOWN);
+                                canChangeTwo = false;
+
+                            }
+                        default:
+                            break;
+                    }
+                }
+
+            }
+            repaint();
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

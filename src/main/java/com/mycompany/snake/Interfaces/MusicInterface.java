@@ -4,13 +4,16 @@
  */
 package com.mycompany.snake.Interfaces;
 
+import java.io.IOException;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  *
  * @author emili_d3xx9ov
  */
-public interface MusicInterface {
-    public Clip startMusic(String song);
-    
+public interface MusicInterface{
+    public void startMusic(String song) throws UnsupportedAudioFileException, IOException, LineUnavailableException;
+    public void stopMusic();
 }
