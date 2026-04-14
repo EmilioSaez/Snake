@@ -116,8 +116,9 @@ public class Snake {
         }
 
     }
+    
 
-    public boolean hitHisSelf() { //La cabeza se fusiona con el tiempo
+    public boolean hitHisSelf() { 
         boolean first = true;
         for (Node node : snakeBody) {
             if (first) {

@@ -11,9 +11,8 @@ import com.mycompany.snake.Interfaces.Incrementer;
  * @author vm.alonsobarberan
  */
 public class Scoreboard extends javax.swing.JPanel implements Incrementer {
-    
-    private int score;
 
+    private int score;
 
     /**
      * Creates new form Scoreboard
@@ -23,11 +22,17 @@ public class Scoreboard extends javax.swing.JPanel implements Incrementer {
         score = 0;
         incrementScore(0);
     }
- 
-    
+
     public void incrementScore(int increment) {
         score += increment;
-        jLabel1.setText(ConfigData.instance().userName+ ": "+   score);
+        if (ConfigData.instance().multiplayer == true) {
+            jLabel1.setText(ConfigData.instance().userName + ": " + score + "\n     "
+                    + ConfigData.instance().secondUserName + " :" + score);
+
+        } else {
+            jLabel1.setText(ConfigData.instance().userName + ": " + score);
+
+        }
     }
 
     /**
@@ -61,7 +66,4 @@ public class Scoreboard extends javax.swing.JPanel implements Incrementer {
         return score;
     }
 
-
-
-   
 }

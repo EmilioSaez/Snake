@@ -44,6 +44,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
     @Override
     public void initGame() {
         initBoard();
+        
 
     }
 
@@ -117,7 +118,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         try {
             startMusic(boardSongRute); // https://www.youtube.com/watch?v=n14r9Tjx0z4
         } catch (Exception e) {
-            logger.log(java.util.logging.Level.SEVERE, "No se pudo reproducir la música", e);
+
         }
         snakeOne = new Snake(this);
         if (ConfigData.instance().multiplayer) {
@@ -152,7 +153,9 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
                     disapear();
                     counter = 0;
                 }
-                eatFood();
+                eatFood(snakeOne);
+                
+
             } else {
                 timer.stop();
                 processGameOver();
@@ -171,7 +174,9 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
                     disapear();
                     counter = 0;
                 }
-                eatFood();
+                eatFood(snakeOne);
+                eatFood(snakeTwo);
+
             } else {
                 timer.stop();
                 processGameOver();
@@ -205,6 +210,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
                 outputStream.close();
             }
         }
+        stopMusic();
     }
 
     private boolean canMove(int curretRow, int currentCol, Snake snake) {
@@ -240,8 +246,8 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
 
     }
 
-    private void eatFood() {
-        if (snakeOne.getFirst().getRow() == food.getRow() && snakeOne.getFirst().getCol() == food.getCol()) {
+    private void eatFood(Snake snake) {
+        if (snake.getFirst().getRow() == food.getRow() && snake.getFirst().getCol() == food.getCol()) {
             snakeOne.grow(food.increase());
             incrementer.incrementScore(1);
             food.changeFoodPosition();
@@ -253,15 +259,15 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
             if (sFood == null && (int) (Math.random() * 3) == 1) {
                 sFood = new SpecialFood(0, 0, this);
                 sFood.changeFoodPosition();
-                while (snakeOne.isTheSnakeHere(sFood)) {
+                while (snake.isTheSnakeHere(sFood)) {
                     sFood.changeFoodPosition();
                 }
             }
         }
 
         if (sFood != null) {
-            if (snakeOne.getFirst().getRow() == sFood.getRow() && snakeOne.getFirst().getCol() == sFood.getCol()) {
-                snakeOne.grow(sFood.increase());
+            if (snake.getFirst().getRow() == sFood.getRow() && snake.getFirst().getCol() == sFood.getCol()) {
+                snake.grow(sFood.increase());
                 incrementer.incrementScore(3);
                 counter = 0;
                 System.out.println("¡Soy especial!");
@@ -397,7 +403,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
                     }
                 }
             } else {
-                if (canChangeOne) {
+                if (canChangeOne && canChangeTwo) {
 
                     switch (e.getKeyCode()) {
                         case KeyEvent.VK_LEFT:

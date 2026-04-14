@@ -11,11 +11,13 @@ package com.mycompany.snake;
 public class ConfigData {
     private static ConfigData configData = null;
     public String userName;
+    public String secondUserName;
     public int deltaTimeDificulty; 
     public boolean multiplayer;
     
     private ConfigData() {
         userName = "";
+        secondUserName = "";
         deltaTimeDificulty = 100;
         multiplayer = false;
     }

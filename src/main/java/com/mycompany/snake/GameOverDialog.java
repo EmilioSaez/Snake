@@ -6,36 +6,53 @@ package com.mycompany.snake;
 
 import com.mycompany.snake.Interfaces.InitGamer;
 import com.mycompany.snake.Interfaces.GameOverInterface;
+import com.mycompany.snake.Interfaces.MusicInterface;
 import java.awt.Component;
 import com.mycompany.snake.Interfaces.RestartAplicationInteface;
 import com.mycompany.snake.Interfaces.VisibilityInterface;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.beans.Visibility;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  *
  * @author emisaerar
  */
-public class GameOverDialog extends javax.swing.JDialog implements GameOverInterface {
+public class GameOverDialog extends javax.swing.JDialog implements GameOverInterface, MusicInterface {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GameOverDialog.class.getName());
     private InitGamer initGamer;
     private BufferedReader input;
     private RestartAplicationInteface restartAplicationInteface;
     private VisibilityInterface visibilityInterface;
+    private String menuSongRute = "GameOverMenuSong.wav";
+    private Clip gameOverMusic;
 
     /**
      * Creates new form GameOverDialog
      */
     public GameOverDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        input = null;
-                setRecords(); // Por arreglar
 
+        input = null;
+        setRecords(); // Por arreglar
         initComponents();
+        
+
     }
+
     private void setRecords() {
         String lastLine = "";
         String bestLine = "";
@@ -54,8 +71,7 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
                 }
             }
             System.out.println(bestLine);
-            jTextField1.setText("Mejor Partida: " + bestLine);
-            jTextField2.setText("Tu partida" + lastLine);
+
         } catch (Exception e) {
             System.err.println(e);
         } finally {
@@ -93,8 +109,7 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(null);
@@ -111,9 +126,7 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
         jButton3.setText("Ajustes");
         jButton3.addActionListener(this::jButton3ActionPerformed);
 
-        jTextField1.setText("jTextField1");
-
-        jTextField2.setText("jTextField2");
+        jLabel2.setText("jLabel2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -124,20 +137,15 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
                 .addComponent(jButton3)
                 .addGap(163, 163, 163))
             .addGroup(layout.createSequentialGroup()
+                .addGap(78, 78, 78)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2))
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(84, 84, 84)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
-                            .addComponent(jTextField2))))
+                    .addComponent(jLabel2)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jButton1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2))))
                 .addContainerGap(85, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -145,11 +153,9 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addGap(119, 119, 119)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -163,6 +169,7 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         setVisible(false);
+        stopMusic();
         initGamer.initGame();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -171,9 +178,12 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        stopMusic();
         restartAplicationInteface.resetAll();
+
         visibilityInterface.changeVisibility();
         setVisible(false);
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
@@ -217,6 +227,12 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
     public void setVisible(Component component) {
         setLocationRelativeTo(component);
         setVisible(true);
+        try {
+            startMusic(menuSongRute); // https://www.youtube.com/watch?v=n14r9Tjx0z4
+        } catch (Exception e) {
+            logger.log(java.util.logging.Level.SEVERE, "No se pudo reproducir la música", e);
+        }
+
     }
 
     public void setVisibilityInterface(VisibilityInterface vi) {
@@ -233,8 +249,22 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void startMusic(String song) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        File file = new File(song);
+        AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+        gameOverMusic = AudioSystem.getClip();
+        gameOverMusic.open(audioStream);
+        gameOverMusic.loop((Clip.LOOP_CONTINUOUSLY));
+        gameOverMusic.start();
+    }
+
+    @Override
+    public void stopMusic() {
+        gameOverMusic.stop();
+    }
 
 }
