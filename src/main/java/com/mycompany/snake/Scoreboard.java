@@ -26,9 +26,7 @@ public class Scoreboard extends javax.swing.JPanel implements Incrementer {
     public void incrementScore(int increment) {
         score += increment;
         if (ConfigData.instance().multiplayer == true) {
-            jLabel1.setText(ConfigData.instance().userName + ": " + score + "\n     "
-                    + ConfigData.instance().secondUserName + " :" + score);
-
+            jLabel1.setText(ConfigData.instance().userName + " +" + ConfigData.instance().secondUserName +": " + score);
         } else {
             jLabel1.setText(ConfigData.instance().userName + ": " + score);
 

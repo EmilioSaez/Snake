@@ -44,7 +44,6 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
     @Override
     public void initGame() {
         initBoard();
-        
 
     }
 
@@ -121,10 +120,14 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
 
         }
         snakeOne = new Snake(this);
+        snakeOne.setSnakeColor(Color.BLUE); // Serpiente 1 Azul
+
         if (ConfigData.instance().multiplayer) {
             snakeTwo = new Snake(this);
             snakeTwo.secondSnake();
+            snakeTwo.setSnakeColor(Color.GREEN); // Serpiente 2 Verde
         }
+
         incrementer.reset();
         food = new Food(NUM_ROW_FOOD, NUM_COL_FOOD, this);
         setFocusable(true);
@@ -154,7 +157,6 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
                     counter = 0;
                 }
                 eatFood(snakeOne);
-                
 
             } else {
                 timer.stop();
@@ -190,26 +192,42 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
     private void processGameOver() {
         String dificulty = "";
         if (ConfigData.instance().deltaTimeDificulty == 40) {
-            dificulty = "easy";
+            dificulty = "hard";
 
         } else if (ConfigData.instance().deltaTimeDificulty == 60) {
             dificulty = "medium";
 
         } else {
-            dificulty = "hard";
+            dificulty = "easy";
         }
         timer.stop();
-        gameOverInterface.setVisible(this);
-        try {
-            outputStream = new PrintWriter(new FileWriter("Records"));
-            outputStream.println(ConfigData.instance().userName + ":" + incrementer.returnScore() + dificulty);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            if (outputStream != null) {
-                outputStream.close();
+        if (ConfigData.instance().multiplayer == false) {
+            try {
+                outputStream = new PrintWriter(new FileWriter("Records", true));
+                outputStream.println(ConfigData.instance().userName + ":" + incrementer.returnScore() + " " + dificulty);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } finally {
+                if (outputStream != null) {
+                    outputStream.close();
+                }
             }
+        } else {
+            try {
+                outputStream = new PrintWriter(new FileWriter("TwoPlayerRecords", true));
+                outputStream.println(ConfigData.instance().userName + "+" + ConfigData.instance().secondUserName + ":" + incrementer.returnScore() + " " + dificulty);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } finally {
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            }
+
         }
+
+        gameOverInterface.setVisible(this);
+
         stopMusic();
     }
 
@@ -283,22 +301,27 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         g.drawRect(0, 0, with, height);
     }
 
-    public void drawSquare(Graphics g, int row, int col, boolean isHead) {
+    @Override
+    public void drawSquare(Graphics g, int row, int col, Color color, boolean isHead) {
+        if (color == null) {
+            color = Color.GREEN;
+        }
+
         int x = col * squareWidth();
         int y = row * squareHeight();
-        Color color = isHead ? new Color(204, 102, 102) : new Color(102, 102, 204);
-        g.setColor(color);
-        g.fillRect(x + 1, y + 1, squareWidth() - 2,
-                squareHeight() - 2);
-        g.setColor(color.brighter());
+
+        Color finalColor = isHead ? color.brighter() : color;
+
+        g.setColor(finalColor);
+        g.fillRect(x + 1, y + 1, squareWidth() - 2, squareHeight() - 2);
+
+        g.setColor(finalColor.brighter());
         g.drawLine(x, y + squareHeight() - 1, x, y);
         g.drawLine(x, y, x + squareWidth() - 1, y);
-        g.setColor(color.darker());
-        g.drawLine(x + 1, y + squareHeight() - 1,
-                x + squareWidth() - 1, y + squareHeight() - 1);
-        g.drawLine(x + squareWidth() - 1,
-                y + squareHeight() - 1,
-                x + squareWidth() - 1, y + 1);
+
+        g.setColor(finalColor.darker());
+        g.drawLine(x + 1, y + squareHeight() - 1, x + squareWidth() - 1, y + squareHeight() - 1);
+        g.drawLine(x + squareWidth() - 1, y + squareHeight() - 1, x + squareWidth() - 1, y + 1);
     }
 
     @Override

@@ -4,6 +4,7 @@
  */
 package com.mycompany.snake.Interfaces;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 /**
@@ -11,6 +12,5 @@ import java.awt.Graphics;
  * @author emisaerar
  */
 public interface DrawSquareInterface {
-     public void drawSquare(Graphics g, int row, int col, boolean isHead); 
-    
+    void drawSquare(Graphics g, int row, int col, Color color, boolean isHead);
 }

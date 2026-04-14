@@ -8,6 +8,7 @@ import static com.mycompany.snake.Direction.DOWN;
 import static com.mycompany.snake.Direction.LEFT;
 import static com.mycompany.snake.Direction.RIGHT;
 import static com.mycompany.snake.Direction.UP;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +22,17 @@ public class Snake {
     private List<Node> snakeBody;
     private Direction direction;
     private DrawSquareInterface drawSquareInterface;
+    private Color snakeColor;
 
     public Snake(DrawSquareInterface drawSquareInterface) {
         this.drawSquareInterface = drawSquareInterface;
+        this.snakeColor = Color.GREEN;
         snakeBody = new ArrayList<Node>();
         int row = Board.NUM_ROWS_COLS / 2;
         int col = Board.NUM_ROWS_COLS / 2;
         for (int i = 0; i < 4; i++) {
             Node node = new Node(row, col - i);
-            snakeBody.add(i,node);
+            snakeBody.add(i, node);
         }
         direction = Direction.RIGHT;
     }
@@ -44,6 +47,20 @@ public class Snake {
 
     public Direction getDirection() {
         return direction;
+    }
+
+    public void setSnakeColor(Color color) {
+        this.snakeColor = color;
+    }
+
+    public void paint(Graphics g) {
+        boolean isFirst = true;
+        for (Node node : snakeBody) {
+            drawSquareInterface.drawSquare(g, node.getRow(), node.getCol(), snakeColor, isFirst);
+            if (isFirst) {
+                isFirst = false;
+            }
+        }
     }
 
     public List<Node> getSnakeBody() {
@@ -105,26 +122,15 @@ public class Snake {
         }
     }
 
-    public void paint(Graphics g) {
-        boolean first = true;
-        for (Node node : snakeBody) {
-            drawSquareInterface.drawSquare(g, node.getRow(), node.getCol(), first);
-            if (first) {
-                first = false;
-            }
 
-        }
 
-    }
-    
-
-    public boolean hitHisSelf() { 
+    public boolean hitHisSelf() {
         boolean first = true;
         for (Node node : snakeBody) {
             if (first) {
                 first = false;
             } else {
-                if (this.getFirst().getRow()  == node.getRow() && this.getFirst().getCol() == node.getCol()) {
+                if (this.getFirst().getRow() == node.getRow() && this.getFirst().getCol() == node.getCol()) {
                     return true;
                 }
 
@@ -132,34 +138,36 @@ public class Snake {
         }
         return false;
     }
-    
+
     public boolean isTheSnakeHere(Node n) {
         for (Node node : snakeBody) {
-            if (node.getRow() == n.getRow() && node.getCol() == n.getCol() ) {
+            if (node.getRow() == n.getRow() && node.getCol() == n.getCol()) {
                 return true;
             }
         }
         return false;
     }
+
     public void secondSnake() {
         snakeBody.clear();
         int row = Board.NUM_ROWS_COLS / 2;
         int col = Board.NUM_ROWS_COLS / 2;
         for (int i = 0; i < 4; i++) {
             Node node = new Node(row + 2, col - i);
-            snakeBody.add(i,node);
+            snakeBody.add(i, node);
         }
     }
-    public boolean hitOtherSnake( Snake snakeTwo) {
+
+    public boolean hitOtherSnake(Snake snakeTwo) {
         for (Node node1 : snakeBody) {
             for (Node node2 : snakeTwo.snakeBody) {
-                if (node1.getRow()== node2.getRow() && node1.getCol() == node2.getCol()) {
+                if (node1.getRow() == node2.getRow() && node1.getCol() == node2.getCol()) {
                     return true;
                 }
             }
         }
         return false;
-        
+
     }
 
 }

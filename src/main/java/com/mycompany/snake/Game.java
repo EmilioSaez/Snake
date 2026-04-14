@@ -48,8 +48,6 @@ public class Game extends javax.swing.JFrame implements  RestartAplicationIntefa
         scoreboard1 = new com.mycompany.snake.Scoreboard();
         board1 = new com.mycompany.snake.Board();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout gameOverDialog1Layout = new javax.swing.GroupLayout(gameOverDialog1.getContentPane());
         gameOverDialog1.getContentPane().setLayout(gameOverDialog1Layout);
@@ -73,18 +71,10 @@ public class Game extends javax.swing.JFrame implements  RestartAplicationIntefa
         );
         board1Layout.setVerticalGroup(
             board1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 247, Short.MAX_VALUE)
+            .addGap(0, 271, Short.MAX_VALUE)
         );
 
         getContentPane().add(board1, java.awt.BorderLayout.CENTER);
-
-        jMenu1.setText("More");
-
-        jMenuItem1.setText("About");
-        jMenu1.add(jMenuItem1);
-
-        jMenuBar1.add(jMenu1);
-
         setJMenuBar(jMenuBar1);
 
         pack();
@@ -118,9 +108,7 @@ public class Game extends javax.swing.JFrame implements  RestartAplicationIntefa
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.mycompany.snake.Board board1;
     private com.mycompany.snake.GameOverDialog gameOverDialog1;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private com.mycompany.snake.MenuDialog menuDialog1;
     private com.mycompany.snake.Scoreboard scoreboard1;
     // End of variables declaration//GEN-END:variables

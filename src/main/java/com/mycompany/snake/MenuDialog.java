@@ -78,32 +78,36 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
-        jLabel1.setText("Bienvenido a Snake");
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("properties/Bundle"); // NOI18N
+        jLabel1.setText(bundle.getString("Welcome to Snake!")); // NOI18N
 
-        jButton1.setText("Facil :D");
+        jButton1.setText(bundle.getString("Easy :D")); // NOI18N
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
-        jLabel2.setText("Dificultad");
+        jLabel2.setText(bundle.getString("Difficulty")); // NOI18N
 
-        jButton2.setText("Media :|");
+        jButton2.setText(bundle.getString("Medium :|")); // NOI18N
         jButton2.addActionListener(this::jButton2ActionPerformed);
 
-        jButton3.setText("Dificil >:(");
+        jButton3.setText(bundle.getString("Hard >:(")); // NOI18N
         jButton3.addActionListener(this::jButton3ActionPerformed);
 
-        jLabel3.setText("Tu nombre");
+        jLabel3.setText(bundle.getString("Your Name")); // NOI18N
 
-        jButton4.setText("Empezar");
+        jButton4.setText(bundle.getString("Start")); // NOI18N
         jButton4.addActionListener(this::jButton4ActionPerformed);
 
-        jTextField1.setText("Mi Nombre");
         jTextField1.addActionListener(this::jTextField1ActionPerformed);
 
-        jLabel4.setText("Multijugador");
+        jLabel4.setText(bundle.getString("Multiplayer")); // NOI18N
 
         jToggleButton1.setText("No");
         jToggleButton1.addActionListener(this::jToggleButton1ActionPerformed);
@@ -121,8 +125,20 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
 
         jLabel6.setText("Snake 2: W A S D");
 
-        jTextField2.setText("Mi Nombre");
         jTextField2.addActionListener(this::jTextField2ActionPerformed);
+
+        jMenu2.setText(bundle.getString("Edit")); // NOI18N
+        jMenu2.addActionListener(this::jMenu2ActionPerformed);
+
+        jMenuItem1.setText(bundle.getString("Language")); // NOI18N
+        jMenu2.add(jMenuItem1);
+
+        jMenuItem2.setText(bundle.getString("About")); // NOI18N
+        jMenu2.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -150,7 +166,7 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(112, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(91, 91, 91))
             .addGroup(layout.createSequentialGroup()
@@ -249,6 +265,10 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
     private void jLabel5AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jLabel5AncestorAdded
     }//GEN-LAST:event_jLabel5AncestorAdded
 
+    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
+        
+    }//GEN-LAST:event_jMenu2ActionPerformed
+
     public void setInitGamer(InitGamer initGamer) {
         this.initGamer = initGamer;
     }
@@ -306,6 +326,10 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JToggleButton jToggleButton1;

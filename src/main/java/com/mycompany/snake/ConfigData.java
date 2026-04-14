@@ -18,7 +18,7 @@ public class ConfigData {
     private ConfigData() {
         userName = "";
         secondUserName = "";
-        deltaTimeDificulty = 100;
+        deltaTimeDificulty = 80;
         multiplayer = false;
     }
     

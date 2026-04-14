@@ -49,7 +49,6 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
         input = null;
         setRecords(); // Por arreglar
         initComponents();
-        
 
     }
 
@@ -57,33 +56,68 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
         String lastLine = "";
         String bestLine = "";
         int maxPuntuations = -1;
-        try {
-            input = new BufferedReader(new FileReader("Records"));
-            String line;
-            while ((line = input.readLine()) != null) {
-                lastLine = line;
-                String[] lineParts = line.split(":");
-                int actualPoints = Integer.parseInt(lineParts[1].split(" ")[0]);
+        String puntosString = "";
+        if (ConfigData.instance().multiplayer == false) {
+            try {
+                input = new BufferedReader(new FileReader("Records"));
+                String line;
+                while ((line = input.readLine()) != null) {
+                    puntosString = line.split(":")[1].trim().split(" ")[0];
 
-                if (actualPoints > maxPuntuations) {
-                    maxPuntuations = actualPoints;
-                    bestLine = line;
+                    if (maxPuntuations < Integer.parseInt(puntosString)) {
+                        maxPuntuations = Integer.parseInt(puntosString);
+                        bestLine = line;
+                    }
+                    lastLine = line;
+
+                }
+                jrecord.setText(bestLine);
+                jpuntuation.setText(lastLine);
+
+            } catch (Exception e) {
+                System.err.println(e);
+            } finally {
+                if (input != null) {
+                    try {
+                        input.close();
+                    } catch (IOException ex) {
+                        System.getLogger(GameOverDialog.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                    }
+
                 }
             }
-            System.out.println(bestLine);
+        } else {
+            try {
+                input = new BufferedReader(new FileReader("TwoPlayerRecords"));
+                String line;
+                while ((line = input.readLine()) != null) {
+                    puntosString = line.split(":")[1].trim().split(" ")[0];
 
-        } catch (Exception e) {
-            System.err.println(e);
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException ex) {
-                    System.getLogger(GameOverDialog.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                    if (maxPuntuations < Integer.parseInt(puntosString)) {
+                        maxPuntuations = Integer.parseInt(puntosString);
+                        bestLine = line;
+                    }
+                    lastLine = line;
+
                 }
+                jrecord.setText(bestLine);
+                jpuntuation.setText(lastLine);
 
+            } catch (Exception e) {
+                System.err.println(e);
+            } finally {
+                if (input != null) {
+                    try {
+                        input.close();
+                    } catch (IOException ex) {
+                        System.getLogger(GameOverDialog.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                    }
+
+                }
             }
+
         }
+
     }
 
     public GameOverDialog() {
@@ -109,59 +143,99 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jpuntuation = new javax.swing.JLabel();
+        jrecord = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(null);
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
-        jLabel1.setText("HAS MUERTO");
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("properties/Bundle_es_ES"); // NOI18N
+        jLabel1.setText(bundle.getString("You Died")); // NOI18N
 
-        jButton1.setText("Nueva  Partida");
+        jButton1.setText(bundle.getString("New Game")); // NOI18N
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
-        jButton2.setText("Salir");
+        jButton2.setText(bundle.getString("Exit")); // NOI18N
         jButton2.addActionListener(this::jButton2ActionPerformed);
 
-        jButton3.setText("Ajustes");
+        jButton3.setText(bundle.getString("Settings")); // NOI18N
         jButton3.addActionListener(this::jButton3ActionPerformed);
 
-        jLabel2.setText("jLabel2");
+        jpuntuation.setText(bundle.getString("GameOverDialog.jpuntuation.text")); // NOI18N
+
+        jrecord.setText(bundle.getString("GameOverDialog.jrecord.text")); // NOI18N
+
+        jLabel2.setText(bundle.getString("Record")); // NOI18N
+
+        jLabel3.setText(bundle.getString("Your Puntuation")); // NOI18N
+
+        jMenu2.setText(bundle.getString("GameOverDialog.jMenu2.text")); // NOI18N
+
+        jMenuItem1.setText(bundle.getString("GameOverDialog.jMenuItem1.text")); // NOI18N
+        jMenuItem1.addActionListener(this::jMenuItem1ActionPerformed);
+        jMenu2.add(jMenuItem1);
+
+        jMenuItem3.setText(bundle.getString("GameOverDialog.jMenuItem3.text")); // NOI18N
+        jMenu2.add(jMenuItem3);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3)
-                .addGap(163, 163, 163))
             .addGroup(layout.createSequentialGroup()
-                .addGap(78, 78, 78)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jButton1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2))))
-                .addContainerGap(85, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(78, 78, 78)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2))
+                            .addComponent(jLabel3)
+                            .addComponent(jpuntuation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator1)
+                            .addComponent(jrecord, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(118, 118, 118)
+                        .addComponent(jButton3)))
+                .addContainerGap(120, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(31, 31, 31)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addGap(119, 119, 119)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jrecord)
+                .addGap(12, 12, 12)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addComponent(jpuntuation)
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -183,8 +257,12 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
 
         visibilityInterface.changeVisibility();
         setVisible(false);
-        
+
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -227,11 +305,13 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
     public void setVisible(Component component) {
         setLocationRelativeTo(component);
         setVisible(true);
+
         try {
             startMusic(menuSongRute); // https://www.youtube.com/watch?v=n14r9Tjx0z4
         } catch (Exception e) {
             logger.log(java.util.logging.Level.SEVERE, "No se pudo reproducir la música", e);
         }
+        setRecords();
 
     }
 
@@ -250,6 +330,14 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel jpuntuation;
+    private javax.swing.JLabel jrecord;
     // End of variables declaration//GEN-END:variables
 
     @Override

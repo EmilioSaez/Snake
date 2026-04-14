@@ -34,7 +34,7 @@ public class Food extends Node {
     }
 
     public void paint(Graphics g) {
-        drawSquareInterface.drawSquare(g, super.getRow(), super.getCol(), true);
+        drawSquareInterface.drawSquare(g, super.getRow(), super.getCol(),java.awt.Color.RED, true);
     }
 
     public static int returnRandomRow() {

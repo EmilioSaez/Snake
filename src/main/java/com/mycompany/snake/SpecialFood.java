@@ -27,7 +27,7 @@ public class SpecialFood extends Food{
     @Override
     public void paint(Graphics g) {
         g.setColor(Color.yellow);
-        drawSquareInterface.drawSquare(g, super.getRow(), super.getCol(), false);        
+        drawSquareInterface.drawSquare(g, super.getRow(), super.getCol(),java.awt.Color.YELLOW, false);        
     }
 
     @Override
