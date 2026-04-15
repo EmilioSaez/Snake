@@ -47,8 +47,8 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
         super(parent, modal);
 
         input = null;
-        setRecords(); // Por arreglar
         initComponents();
+        this.setLocationRelativeTo(null); 
 
     }
 
@@ -123,6 +123,7 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
     public GameOverDialog() {
         super();
         initComponents();
+        this.setLocationRelativeTo(null);
 
     }
 
@@ -222,14 +223,14 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jrecord)
-                .addGap(12, 12, 12)
+                .addComponent(jrecord, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jpuntuation, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jpuntuation)
-                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -253,8 +254,8 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         stopMusic();
+        ConfigData.instance().multiplayer = false;
         restartAplicationInteface.resetAll();
-
         visibilityInterface.changeVisibility();
         setVisible(false);
 
@@ -305,7 +306,7 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
     public void setVisible(Component component) {
         setLocationRelativeTo(component);
         setVisible(true);
-
+        
         try {
             startMusic(menuSongRute); // https://www.youtube.com/watch?v=n14r9Tjx0z4
         } catch (Exception e) {

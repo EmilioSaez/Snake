@@ -44,6 +44,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
     @Override
     public void initGame() {
         initBoard();
+        requestFocus();
 
     }
 
@@ -81,6 +82,8 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
     private Snake snakeOne;
     private Snake snakeTwo;
     private Timer timer;
+    private boolean canChangeOne = true;
+    private boolean canChangeTwo = true;
     private MyKeyAdapter keyAdapter;
     private GameOverInterface gameOverInterface;
     public static final int NUM_ROWS_COLS = 30;
@@ -94,6 +97,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         boardSongRute = "GameSong.wav";
         outputStream = null;
         initComponents();
+
         counter = 0;
         snakeOne = new Snake(this);
         if (ConfigData.instance().multiplayer) {
@@ -162,6 +166,8 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
                 timer.stop();
                 processGameOver();
             }
+            canChangeOne = true;
+
         } else {
             if (canMove(snakeOne.getFirst().getRow(), snakeOne.getFirst().getCol(), snakeOne)
                     && canMove(snakeTwo.getFirst().getRow(), snakeTwo.getFirst().getCol(), snakeTwo)
@@ -183,6 +189,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
                 timer.stop();
                 processGameOver();
             }
+            canChangeTwo = true;
 
         }
 
@@ -323,11 +330,28 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         g.drawLine(x + 1, y + squareHeight() - 1, x + squareWidth() - 1, y + squareHeight() - 1);
         g.drawLine(x + squareWidth() - 1, y + squareHeight() - 1, x + squareWidth() - 1, y + 1);
     }
+    private void paintBackground(Graphics g) {
+        for (int i = 0; i < NUM_ROWS_COLS; i++) {
+            for (int j = 0; j < NUM_ROWS_COLS; j++) {
+                if ((i + j) % 2 == 0) {
+                    g.setColor(new Color(237, 201, 175));
+                    
+                } else {
+                    g.setColor(new Color(219, 181, 153));
+                }
+                int x = j * squareWidth();
+                int y = i * squareHeight();
+                
+                g.fillRect(x, y, squareWidth(), squareHeight());
+            }
+        }
+    }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         paintBorderGame(g);
+        paintBackground(g);
         snakeOne.paint(g);
         if (ConfigData.instance().multiplayer) {
             snakeTwo.paint(g);
@@ -370,9 +394,6 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
 
     class MyKeyAdapter extends KeyAdapter {
 
-        private boolean canChangeOne;
-        private boolean canChangeTwo;
-
         public MyKeyAdapter() {
             canChangeOne = true;
             if (ConfigData.instance().multiplayer) {
@@ -382,7 +403,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         }
 
         public void setCanChange(boolean canChange) {
-            this.canChangeOne = canChange;
+            canChangeOne = canChange;
         }
 
         @Override

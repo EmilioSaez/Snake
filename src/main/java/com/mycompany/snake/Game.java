@@ -21,6 +21,7 @@ public class Game extends javax.swing.JFrame implements  RestartAplicationIntefa
     public Game() {
 
         initComponents();
+        this.setLocationRelativeTo(null);
         gameOverDialog1.setSize(400, 400);
         gameOverDialog1.setInitGamer(board1);
         gameOverDialog1.setRestartAplicationInterface(this);

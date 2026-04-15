@@ -35,6 +35,9 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
     public MenuDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.getContentPane().setBackground(new java.awt.Color(30, 31, 34));
+
         jLabel5.setVisible(false);
         jLabel6.setVisible(false);
         jTextField2.setVisible(false);
@@ -51,6 +54,8 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
     public MenuDialog() {
         super();
         initComponents();
+        this.setLocationRelativeTo(null);
+
         jLabel5.setVisible(false);
         jLabel6.setVisible(false);
 
@@ -80,7 +85,6 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
         jTextField2 = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -129,9 +133,6 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
 
         jMenu2.setText(bundle.getString("Edit")); // NOI18N
         jMenu2.addActionListener(this::jMenu2ActionPerformed);
-
-        jMenuItem1.setText(bundle.getString("Language")); // NOI18N
-        jMenu2.add(jMenuItem1);
 
         jMenuItem2.setText(bundle.getString("About")); // NOI18N
         jMenu2.add(jMenuItem2);
@@ -252,6 +253,7 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
         } else {
             jToggleButton1.setText("No");
             ConfigData.instance().multiplayer = false;
+            jTextField2.setVisible(false);
             jLabel5.setVisible(false);
             jLabel6.setVisible(false);
 
@@ -266,7 +268,7 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
     }//GEN-LAST:event_jLabel5AncestorAdded
 
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
-        
+
     }//GEN-LAST:event_jMenu2ActionPerformed
 
     public void setInitGamer(InitGamer initGamer) {
@@ -276,6 +278,16 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
     public void setVisible(Component component) {
         setLocationRelativeTo(component);
         setVisible(true);
+        if (jToggleButton1.isSelected()) {
+            jToggleButton1.setText("Sí");
+            jLabel5.setVisible(true);
+            jLabel6.setVisible(true);
+            jTextField2.setVisible(true);
+        } else {
+            jToggleButton1.setText("No");
+            jLabel5.setVisible(false);
+            jLabel6.setVisible(false);
+        }
     }
 
     /**
@@ -328,7 +340,6 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
