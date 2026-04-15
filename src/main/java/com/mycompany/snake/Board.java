@@ -124,12 +124,12 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
 
         }
         snakeOne = new Snake(this);
-        snakeOne.setSnakeColor(Color.BLUE); // Serpiente 1 Azul
+        snakeOne.setSnakeColor(Color.GRAY);
 
         if (ConfigData.instance().multiplayer) {
             snakeTwo = new Snake(this);
             snakeTwo.secondSnake();
-            snakeTwo.setSnakeColor(Color.GREEN); // Serpiente 2 Verde
+            snakeTwo.setSnakeColor(new Color(218, 165, 32));
         }
 
         incrementer.reset();
@@ -317,7 +317,7 @@ public class Board extends javax.swing.JPanel implements DrawSquareInterface, In
         int x = col * squareWidth();
         int y = row * squareHeight();
 
-        Color finalColor = isHead ? color.brighter() : color;
+        Color finalColor = isHead ? color.darker(): color;
 
         g.setColor(finalColor);
         g.fillRect(x + 1, y + 1, squareWidth() - 2, squareHeight() - 2);
