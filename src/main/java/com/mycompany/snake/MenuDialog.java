@@ -285,7 +285,7 @@ public class MenuDialog extends javax.swing.JDialog implements MusicInterface {
     }//GEN-LAST:event_jMenu2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this, "Más informacion aqui : https://emiliosaez.github.io/Css_Clase/ ");
+        javax.swing.JOptionPane.showMessageDialog(this, "Este juego ha sido desarrollado como una pratica de programación por Emilio Sáez Raro");
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     public void setInitGamer(InitGamer initGamer) {
