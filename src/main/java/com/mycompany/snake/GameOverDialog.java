@@ -55,6 +55,7 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
         String lastLine = "";
         String bestLine = "";
         int maxPuntuations = -1;
+        int currentDifficulty = ConfigData.instance().deltaTimeDificulty; 
         String puntosString = "";
         if (ConfigData.instance().multiplayer == false) {
             try {
