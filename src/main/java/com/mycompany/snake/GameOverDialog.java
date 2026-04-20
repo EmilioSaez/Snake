@@ -48,7 +48,6 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
 
         input = null;
         initComponents();
-        this.setLocationRelativeTo(null); 
 
     }
 
@@ -124,6 +123,21 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
         super();
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null);
+        this.getContentPane().setBackground(new java.awt.Color(89, 65, 45));
+        jLabel1.setForeground(new java.awt.Color(231, 76, 60));
+        java.awt.Color crema = new java.awt.Color(255, 245, 230);
+        jLabel2.setForeground(crema);
+        jLabel3.setForeground(crema);
+        jrecord.setForeground(crema);
+        jpuntuation.setForeground(crema);
+        jButton1.setBackground(new java.awt.Color(219, 181, 153));
+        jButton1.setForeground(java.awt.Color.BLACK);
+        jButton2.setBackground(new java.awt.Color(120, 90, 70));
+        jButton2.setForeground(java.awt.Color.WHITE);
+        jButton3.setBackground(new java.awt.Color(160, 130, 100));
+        jButton3.setForeground(java.awt.Color.WHITE);
+        jSeparator1.setForeground(new java.awt.Color(219, 181, 153));
 
     }
 
@@ -151,8 +165,7 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
         jSeparator1 = new javax.swing.JSeparator();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(null);
@@ -180,12 +193,9 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
 
         jMenu2.setText(bundle.getString("GameOverDialog.jMenu2.text")); // NOI18N
 
-        jMenuItem1.setText(bundle.getString("GameOverDialog.jMenuItem1.text")); // NOI18N
-        jMenuItem1.addActionListener(this::jMenuItem1ActionPerformed);
-        jMenu2.add(jMenuItem1);
-
-        jMenuItem3.setText(bundle.getString("GameOverDialog.jMenuItem3.text")); // NOI18N
-        jMenu2.add(jMenuItem3);
+        jMenuItem4.setText(bundle.getString("GameOverDialog.jMenuItem4.text")); // NOI18N
+        jMenuItem4.addActionListener(this::jMenuItem4ActionPerformed);
+        jMenu2.add(jMenuItem4);
 
         jMenuBar1.add(jMenu2);
 
@@ -261,9 +271,9 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        javax.swing.JOptionPane.showMessageDialog(this, "Más informacion aqui : https://emiliosaez.github.io/Css_Clase/ ");
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -306,7 +316,7 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
     public void setVisible(Component component) {
         setLocationRelativeTo(component);
         setVisible(true);
-        
+
         try {
             startMusic(menuSongRute); // https://www.youtube.com/watch?v=n14r9Tjx0z4
         } catch (Exception e) {
@@ -334,8 +344,7 @@ public class GameOverDialog extends javax.swing.JDialog implements GameOverInter
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel jpuntuation;
     private javax.swing.JLabel jrecord;
